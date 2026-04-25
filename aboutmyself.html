@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justine Wayne Portfolio</title>
+    <style>
+        :root {
+            --bg: #0b1120;
+            --panel: rgba(13, 18, 32, 0.9);
+            --panel-strong: rgba(20, 27, 45, 0.95);
+            --accent: #7f8ea3;
+            --accent-soft: #a6b1bf;
+            --text: #d9e1ea;
+            --muted: #adb8c6;
+            --line: rgba(133, 148, 171, 0.18);
+            --shadow: 0 20px 50px rgba(5, 10, 20, 0.55);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(127, 142, 163, 0.14), transparent 30%),
+                radial-gradient(circle at top right, rgba(90, 101, 120, 0.12), transparent 26%),
+                linear-gradient(135deg, #030712 0%, #0b1120 45%, #111827 100%);
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            opacity: 0.35;
+        }
+
+        .floating-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(18px);
+            opacity: 0.35;
+            pointer-events: none;
+            z-index: 0;
+            animation: drift 12s ease-in-out infinite alternate;
+        }
+
+        .orb-one {
+            top: 120px;
+            left: -40px;
+            width: 220px;
+            height: 220px;
+            background: rgba(127, 142, 163, 0.18);
+        }
+
+        .orb-two {
+            right: -30px;
+            top: 500px;
+            width: 180px;
+            height: 180px;
+            background: rgba(90, 101, 120, 0.16);
+            animation-duration: 15s;
+        }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            width: min(1120px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 26px 0 48px;
+        }
+
+        .top-nav {
+            position: sticky;
+            top: 12px;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 14px 18px;
+            margin-bottom: 28px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.72);
+            backdrop-filter: blur(14px);
+            box-shadow: var(--shadow);
+        }
+
+        .top-nav a,
+        .button,
+        .service-link {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .top-nav a {
+            padding: 10px 18px;
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
+        }
+
+        .top-nav a:hover {
+            background: rgba(127, 142, 163, 0.12);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        section {
+            margin-bottom: 28px;
+            padding: 32px;
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            background: var(--panel);
+            backdrop-filter: blur(16px);
+            box-shadow: var(--shadow);
+            animation: riseUp 0.9s ease both;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.25fr 0.9fr;
+            align-items: center;
+            gap: 28px;
+            min-height: 80vh;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            margin-bottom: 14px;
+            padding: 8px 14px;
+            border: 1px solid rgba(166, 177, 191, 0.24);
+            border-radius: 999px;
+            background: rgba(127, 142, 163, 0.1);
+            color: var(--accent-soft);
+            font-size: 0.88rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        h1,
+        h2,
+        h3,
+        p {
+            margin-top: 0;
+        }
+
+        h1 {
+            font-size: clamp(2.7rem, 5vw, 4.7rem);
+            line-height: 0.98;
+            margin-bottom: 16px;
+        }
+
+        h2 {
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            margin-bottom: 14px;
+        }
+
+        .lead {
+            font-size: 1.08rem;
+            line-height: 1.8;
+            color: var(--muted);
+            max-width: 660px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin: 28px 0;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 170px;
+            padding: 14px 22px;
+            border: 1px solid transparent;
+            border-radius: 18px;
+            font-weight: 700;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+        }
+
+        .button.primary {
+            background: linear-gradient(135deg, #738196, #94a0af);
+            color: #0b1120;
+            box-shadow: 0 16px 30px rgba(90, 101, 120, 0.24);
+        }
+
+        .button.secondary {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(166, 177, 191, 0.22);
+        }
+
+        .button:hover,
+        .service-card:hover,
+        .skill-pill:hover,
+        .contact-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .stat-card,
+        .skill-pill,
+        .contact-card {
+            padding: 18px;
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            background: rgba(30, 41, 59, 0.72);
+            transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+        }
+
+        .stat-card strong {
+            display: block;
+            font-size: 1.7rem;
+            color: white;
+            margin-bottom: 6px;
+        }
+
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-photo-wrap {
+            position: relative;
+            width: min(100%, 360px);
+            padding: 18px;
+            border-radius: 34px;
+            background: linear-gradient(180deg, rgba(127, 142, 163, 0.18), rgba(15, 23, 42, 0.55));
+            box-shadow: var(--shadow);
+            animation: floatCard 4.5s ease-in-out infinite;
+        }
+
+        .hero-photo-wrap img {
+            display: block;
+            width: 100%;
+            border-radius: 24px;
+            object-fit: cover;
+        }
+
+        .tech-badge {
+            position: absolute;
+            padding: 10px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 999px;
+            background: rgba(2, 6, 23, 0.78);
+            color: var(--accent-soft);
+            font-size: 0.85rem;
+            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.4);
+            animation: badgePulse 2.4s ease-in-out infinite;
+        }
+
+        .badge-top {
+            top: 18px;
+            left: -20px;
+        }
+
+        .badge-bottom {
+            right: -18px;
+            bottom: 24px;
+            animation-delay: 0.8s;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .about-copy p,
+        .service-card p,
+        .timeline-item p,
+        .contact-card p {
+            line-height: 1.75;
+            color: var(--muted);
+        }
+
+        .skills-grid,
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .skill-pill h3,
+        .contact-card h3,
+        .service-card h3 {
+            margin-bottom: 8px;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .service-card {
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 26px;
+            background: var(--panel-strong);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .service-card:hover,
+        .skill-pill:hover,
+        .contact-card:hover {
+            border-color: rgba(127, 142, 163, 0.32);
+            box-shadow: 0 20px 35px rgba(15, 23, 42, 0.4);
+        }
+
+        .service-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .service-content {
+            padding: 22px;
+        }
+
+        .service-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--accent-soft);
+            font-weight: 700;
+        }
+
+        .timeline {
+            display: grid;
+            gap: 16px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: 20px 20px 20px 26px;
+            border-left: 3px solid rgba(127, 142, 163, 0.34);
+            border-radius: 0 18px 18px 0;
+            background: rgba(15, 23, 42, 0.62);
+        }
+
+        .timeline-item span {
+            display: inline-block;
+            margin-bottom: 8px;
+            color: var(--accent-soft);
+            font-size: 0.92rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .contact-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .contact-card a {
+            color: var(--accent-soft);
+            text-decoration: none;
+        }
+
+        .footer-link {
+            text-align: center;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes riseUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes floatCard {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes drift {
+            0% {
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+            100% {
+                transform: translate3d(30px, -26px, 0) scale(1.12);
+            }
+        }
+
+        @keyframes badgePulse {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.06);
+            }
+        }
+
+        @media (max-width: 920px) {
+            .hero,
+            .two-column,
+            .service-grid,
+            .contact-grid,
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                min-height: auto;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 24px;
+            }
+
+            .badge-top,
+            .badge-bottom {
+                position: static;
+                display: inline-block;
+                margin-top: 12px;
+                margin-right: 10px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .page {
+                width: min(100% - 18px, 1000px);
+            }
+
+            .top-nav {
+                top: 8px;
+                padding: 10px;
+                border-radius: 24px;
+            }
+
+            .top-nav a {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="top"></div>
+    <div class="floating-orb orb-one"></div>
+    <div class="floating-orb orb-two"></div>
+
+    <div class="page">
+        <nav class="top-nav">
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#journey">Journey</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+        <section class="hero reveal active">
+            <div>
+                <span class="eyebrow">Computer Technology Student</span>
+                <h1>Justine Wayne<br>Portfolio</h1>
+                <p class="lead">
+                    I am Justine Wayne M. Urbiztondo, a Bachelor of Industrial Technology student majoring in Computer Technology at Eulogio "Amang" Rodriguez Institute of Science and Technology. I enjoy building my technical foundation in hardware, software, networking, troubleshooting, and practical IT support.
+                </p>
+                <div class="hero-actions">
+                    <a class="button primary" href="#services">Explore My Services</a>
+                    <a class="button secondary" href="#contact">Contact Me</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <strong>NC II</strong>
+                        <span>Computer System Servicing certified</span>
+                    </div>
+                    <div class="stat-card">
+                        <strong>IT</strong>
+                        <span>Hands-on support, setup, and maintenance</span>
+                    </div>
+                    <div class="stat-card">
+                        <strong>Growth</strong>
+                        <span>Focused on learning modern technologies</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="hero-photo-wrap">
+                    <img src="mypicture.jpg" alt="Portrait of Justine Wayne">
+                    <div class="tech-badge badge-top">Hardware Support</div>
+                    <div class="tech-badge badge-bottom">Networking Basics</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="reveal">
+            <div class="two-column">
+                <div class="about-copy">
+                    <span class="eyebrow">About Me</span>
+                    <h2>Building practical skills for real-world IT work</h2>
+                    <p>
+                        My academic journey has given me a strong foundation in computer systems, system maintenance, basic networking, and software troubleshooting. I am especially interested in applying these skills in environments where reliability, security, and user support matter.
+                    </p>
+                    <p>
+                        Alongside my studies, my National Certificate in Computer System Servicing strengthened my ability to assemble computers, diagnose issues, perform preventive maintenance, and configure systems correctly. I value steady improvement and enjoy learning by doing.
+                    </p>
+                </div>
+
+                <div class="skills-grid">
+                    <div class="skill-pill">
+                        <h3>Computer Assembly</h3>
+                        <p>Building, upgrading, and maintaining computer units with attention to performance and reliability.</p>
+                    </div>
+                    <div class="skill-pill">
+                        <h3>Troubleshooting</h3>
+                        <p>Diagnosing software and hardware issues and finding clear, practical solutions.</p>
+                    </div>
+                    <div class="skill-pill">
+                        <h3>System Configuration</h3>
+                        <p>Setting up operating systems, drivers, utilities, and core workstation tools.</p>
+                    </div>
+                    <div class="skill-pill">
+                        <h3>Basic Networking</h3>
+                        <p>Understanding connectivity, local network setup, and essential support practices.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="reveal">
+            <span class="eyebrow">Services Offered</span>
+            <h2>What I can contribute in technology-focused environments</h2>
+            <div class="service-grid">
+                <article class="service-card">
+                    <img src="images%20(7).jpeg" alt="Managed infrastructure and technical support">
+                    <div class="service-content">
+                        <h3>Managed Infrastructure and Support</h3>
+                        <p>
+                            Supporting workstations, local systems, and daily technical operations through setup, maintenance, troubleshooting, and responsive assistance.
+                        </p>
+                        <a class="service-link" href="#contact">Discuss support needs</a>
+                    </div>
+                </article>
+
+                <article class="service-card">
+                    <img src="it_security_vs_cyber_security_9d94c28c00.png" alt="Cybersecurity and risk awareness">
+                    <div class="service-content">
+                        <h3>Cybersecurity and Risk Awareness</h3>
+                        <p>
+                            Helping strengthen digital safety through secure practices, system care, awareness of common threats, and responsible device management.
+                        </p>
+                        <a class="service-link" href="#journey">See my focus areas</a>
+                    </div>
+                </article>
+
+                <article class="service-card">
+                    <img src="types-of-cloud-integration.jpg" alt="Cloud integration and future-ready systems">
+                    <div class="service-content">
+                        <h3>Cloud Integration Mindset</h3>
+                        <p>
+                            Understanding how modern systems connect through cloud services, remote access, scalability, and more flexible digital workflows.
+                        </p>
+                        <a class="service-link" href="#contact">Get in touch</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="journey" class="reveal">
+            <div class="two-column">
+                <div>
+                    <span class="eyebrow">My Journey</span>
+                    <h2>Education and growth path</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <span>Academic Focus</span>
+                            <p>Bachelor of Industrial Technology major in Computer Technology with concentration on practical systems knowledge and technical problem-solving.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <span>Certification</span>
+                            <p>National Certificate in Computer System Servicing, reflecting competency in computer assembly, maintenance, troubleshooting, and configuration.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <span>Career Direction</span>
+                            <p>Preparing to contribute to IT support, infrastructure assistance, and technology environments that value consistency, learning, and service quality.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="eyebrow">Strengths</span>
+                    <h2>How I approach technology work</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <span>Reliable Support</span>
+                            <p>I focus on keeping systems usable, stable, and understandable for the people depending on them every day.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <span>Continuous Learning</span>
+                            <p>I stay motivated to improve my technical ability and adapt to new tools, workflows, and industry practices.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <span>Hands-On Mindset</span>
+                            <p>I learn best by applying concepts in practical environments where troubleshooting and decision-making matter.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="reveal">
+            <span class="eyebrow">Contact Information</span>
+            <h2>Let's connect</h2>
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <h3>Phone</h3>
+                    <p><a href="tel:+639327662338">+63 932 766 2338</a></p>
+                </div>
+                <div class="contact-card">
+                    <h3>Email</h3>
+                    <p><a href="mailto:justinewayne113@gmail.com">justinewayne113@gmail.com</a></p>
+                </div>
+                <div class="contact-card">
+                    <h3>Focus</h3>
+                    <p>Computer support, system servicing, and continuous growth in the IT field.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="footer-link">
+            <a class="button secondary" href="#top" id="goTopButton">Go To Top</a>
+        </div>
+    </div>
+
+    <script>
+        const reveals = document.querySelectorAll('.reveal');
+        const goTopButton = document.getElementById('goTopButton');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.18 });
+
+        reveals.forEach((section) => observer.observe(section));
+
+        goTopButton.addEventListener('click', function (event) {
+            event.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
